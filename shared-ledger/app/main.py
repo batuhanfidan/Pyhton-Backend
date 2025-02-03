@@ -19,10 +19,15 @@ def add_ledger_entry(entry: LedgerCreate, db: Session = Depends(get_db)):
     if existing_entry:
         raise HTTPException(status_code=400, detail="Duplicate transaction detected")
 
+    if entry.amount < 0:
+        current_balance = sum(e.amount for e in db.query(LedgerEntry).filter(LedgerEntry.owner_id == entry.owner_id).all())
+        if current_balance + entry.amount < 0:
+            raise HTTPException(status_code=400, detail="Insufficient balance")
+
     new_entry = LedgerEntry(
         operation=entry.operation,
         amount=entry.amount,
-        nonce=str(uuid.uuid4()),
+        nonce=entry.nonce,
         owner_id=entry.owner_id
     )
     db.add(new_entry)
