@@ -44,7 +44,7 @@ pip install -r requirements.txt
 
 3. Databese adresinizi girin:
 
-DATABASE_URL=postgresql://postgres:youradress..
+DATABASE_URL=postgresql://youradress.
 
 4. Migrasyonları çalıştırın:
 
