@@ -1,9 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Enum
-from sqlalchemy.ext.declarative import declarative_base
 import enum
-import datetime
-
-Base = declarative_base()
+from datetime import UTC, datetime
+from app.database import Base 
 
 class LedgerOperation(enum.Enum):
     DAILY_REWARD = "DAILY_REWARD"
@@ -21,5 +19,4 @@ class LedgerEntry(Base):
     amount = Column(Integer, nullable=False)
     nonce = Column(String, unique=True, nullable=False)
     owner_id = Column(String, nullable=False)
-    created_on = Column(DateTime, default=datetime.datetime.utcnow)
-
+    created_on = Column(DateTime, default=lambda: datetime.now(UTC))
